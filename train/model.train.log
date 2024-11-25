@@ -1,0 +1,69 @@
+[2024-11-24 23:55:42 INFO] 
+amp: false
+bert: xlm-roberta-large
+bert_pooling: mean
+binarize: false
+buckets: 32
+build: true
+cache: false
+checkpoint: false
+clip: 5.0
+dev: /home/wolfingten/projects/data/tut/combined.val
+device: '0'
+dist: ddp
+embed: glove-6b-100
+encoder: bert
+encoder_dropout: 0.1
+epochs: 10
+feat: null
+fix_len: 20
+implicit: false
+lr: 5.0e-05
+lr_rate: 20
+max_len: null
+mbr: false
+min_freq: 2
+mix_dropout: 0.0
+mlp_dropout: 0.33
+mode: train
+n_bert_layers: 4
+n_label_mlp: 100
+n_span_mlp: 500
+path: model
+seed: 1
+test: /home/wolfingten/projects/data/tut/combined.test
+threads: 16
+train: /home/wolfingten/projects/data/tut/combined.train
+update_steps: 4
+wandb: false
+warmup: 0.1
+workers: 0
+
+[2024-11-24 23:55:42 INFO] Building the fields
+[2024-11-24 23:55:44 INFO] Tree(
+ (words): SubwordField(vocab_size=250002, pad=<pad>, unk=<unk>, bos=<s>, eos=</s>)
+ (trees): RawField()
+ (charts): ChartField(vocab_size=789)
+)
+[2024-11-24 23:55:44 INFO] Building the model
+[2024-11-24 23:55:46 INFO] CRFConstituencyModel(
+  (encoder): TransformerEmbedding(xlm-roberta-large, n_layers=4, n_out=1024, stride=256, pooling=mean, pad_index=1, finetune=True)
+  (encoder_dropout): Dropout(p=0.1, inplace=False)
+  (span_mlp_l): MLP(n_in=1024, n_out=500, dropout=0.33)
+  (span_mlp_r): MLP(n_in=1024, n_out=500, dropout=0.33)
+  (label_mlp_l): MLP(n_in=1024, n_out=100, dropout=0.33)
+  (label_mlp_r): MLP(n_in=1024, n_out=100, dropout=0.33)
+  (span_attn): Biaffine(n_in=500, bias_x=True)
+  (label_attn): Biaffine(n_in=100, n_out=789, bias_x=True, bias_y=True)
+  (criterion): CrossEntropyLoss()
+)
+
+[2024-11-24 23:55:46 INFO] Loading the data
+[2024-11-24 23:55:48 INFO] Caching the data to /tmp/nix-shell.1JIXLq/tmpyszqjnj7/data.pt
+[2024-11-24 23:55:56 INFO] Caching the data to /tmp/nix-shell.1JIXLq/tmpe4u0euaj/data.pt
+[2024-11-24 23:55:58 INFO] train: Dataset(n_sentences=1848, n_batches=52, n_buckets=32)
+[2024-11-24 23:55:58 INFO] Caching the data to /tmp/nix-shell.1JIXLq/tmpeftkn07l/data.pt
+[2024-11-24 23:56:01 INFO] dev:   Dataset(n_sentences=397, n_batches=32, n_buckets=32)
+[2024-11-24 23:56:01 INFO] test:  Dataset(n_sentences=396, n_batches=32, n_buckets=32)
+
+[2024-11-24 23:56:02 INFO] Epoch 1 / 10:
