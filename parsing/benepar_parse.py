@@ -1,6 +1,7 @@
-import argparse
 import os
-from supar import Parser
+import argparse
+import spacy
+import benepar
 
 
 def parse_arguments():
@@ -13,7 +14,7 @@ def parse_arguments():
         help="Path to the input file containing text to parse.",
     )
     parser.add_argument(
-        "--output_file",
+        "--output_dir",
         type=str,
         default=None,
         help="Path to the output file where predictions will be saved. "
@@ -30,30 +31,24 @@ def parse_arguments():
 def main():
     args = parse_arguments()
 
-    # Set default output file path if not provided
-    if args.output_file is None:
-        input_dir = os.path.dirname(args.input_file)
-        input_filename = os.path.basename(args.input_file)
-        base_name, _ = os.path.splitext(input_filename)
-        args.output_file = os.path.join(input_dir, f"{base_name}.supar")
-
-    if args.lang == "en":
-        parser = Parser.load("con-crf-roberta-en")
-    else:
-        # Load multilingual parser
-        parser = Parser.load("con-crf-xlmr")
+    if args.output_dir is None:
+        args.output_dir = os.path.dirname(args.input_file)
 
     with open(args.input_file, "r", encoding="utf-8") as f:
-        text = f.readlines()
+        stories = f.readlines()
 
-    parser.predict(
-        text,
-        pred=args.output_file,
-        lang=args.lang,
-    )
+    nlp = spacy.load("xx_sent_ud_sm")
+    nlp.add_pipe("benepar", config={"model": "/data/users/jguertler/models/it_bert_base_multilingual_cased_dev=5118.92.pt"})
 
-    print(f"Parses saved to {args.output_file}")
+    parses = []
+    for s in stories:
+        doc = nlp(" ".join(s.split()))
+        sent = list(doc.sents)[0]
+        parses.append(sent._.parse_string)
 
+    with open(os.path.join(args.output_dir, "parse.benepar"), "w", encoding="utf-8") as f:
+        for p in parses:
+            f.write(f"{p}\n")
 
 if __name__ == "__main__":
     main()

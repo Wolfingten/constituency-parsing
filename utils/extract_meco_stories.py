@@ -1,4 +1,5 @@
 import os
+import re
 import csv
 import argparse
 import stanza
@@ -44,17 +45,10 @@ def segment_setnences(row, lang):
     doc = nlp(" ".join(row))
     sentences = []
     for s in doc.sentences:
-        sentences.append(" ".join([token.text for token in s.tokens]))
+        sent = " ".join([token.text for token in s.tokens])
+        sent = re.sub(r"\\n", "", sent)
+        sentences.append(sent)
     return sentences
-
-
-#    with open(in_file, "r") as f:
-#        doc = nlp(f.read())
-#    with open(out_file, "w") as f:
-#        for s in doc.sentences:
-#            line = " ".join([token.text for token in s.tokens])
-#            if not line.startswith("FILE-LABEL"):
-#                f.write(line + "\n")
 
 
 def main():

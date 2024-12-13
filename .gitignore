@@ -1,4 +1,3 @@
 .devenv/
 __pycache__/
-**/.sync.sh
-**/*.sub
+**/sync.sh

@@ -27,14 +27,28 @@ RUN apt update && \
 
 # Update pip
 RUN SHA=ToUcHMe which python3
-RUN python3 -m pip install pip
+RUN python3 -m pip install --upgrade pip
 
 # See http://bugs.python.org/issue19846
 ENV LANG C.UTF-8
 
+# Install Rust and Cargo
+RUN curl https://sh.rustup.rs -sSf | bash -s -- -y && \
+    echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.bashrc && \
+    source ~/.bashrc
+
+# Add Rust and Cargo to PATH for all users
+ENV PATH="/root/.cargo/bin:$PATH"
+
+# clone parser and make evaluation folder(?)
+WORKDIR /
+RUN git clone https://github.com/nikitakit/self-attentive-parser.git
+WORKDIR /self-attentive-parser/EVALB
+RUN make
+
 # install python dependencies from requirements.txt file
 WORKDIR /app
-COPY requirements.txt .
+COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Specify a new user (USER_NAME and USER_UID are specified via --build-arg)

@@ -1,3 +1,14 @@
+torch>=1.6.0
+torchvision
+torchaudio
+torch-struct>=0.4
+transformers>=4.3.0
+pytokenizations>=0.7.2
+
+benepar
+spacy
+
+nltk>=3.2
 supar @ git+https://github.com/yzhangcs/parser
 stanza==1.9.2
 wandb==0.18.5

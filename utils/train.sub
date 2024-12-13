@@ -1,0 +1,12 @@
+universe                = docker
+docker_image            = docker.lsv.uni-saarland.de/jguertler/constituency-parsing:04
+initialdir              = /nethome/jguertler
+executable              = /nethome/jguertler/constituency-parsing/train/$(file_name).sh
+output                  = /data/users/jguertler/logs/parsing/train.$(file_name).$(ClusterId).$(Year)_$(Month)_$(Day)_$(SUBMIT_TIME).out
+error                   = /data/users/jguertler/logs/parsing/train.$(file_name).$(ClusterId).$(Year)_$(Month)_$(Day)_$(SUBMIT_TIME).err
+log                     = /data/users/jguertler/logs/parsing/train.$(file_name).$(ClusterId).$(Year)_$(Month)_$(Day)_$(SUBMIT_TIME).log
+request_CPUs            = 1
+request_memory          = 16G
+request_GPUs            = 1
+requirements            = (GPUs_GlobalMemoryMb >= 40000) && (machine == "cl18lx.lsv.uni-saarland.de")
+queue file_name from (benepar_train)
